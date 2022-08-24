@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eden-task
+spec:
+  selector:
+    matchLabels:
+      run: n-task
+  template:
+    metadata:
+      labels:
+        run: n-task
+    spec:
+      containers:
+        - name: eden_app
+          ports:
+            - containerPort: 80
+          env:
+            - name: APP_KEY
+              value: base64:cUPmwHx4LXa4Z25HhzFiWCf7TlQmSqnt98pnuiHmzgY=

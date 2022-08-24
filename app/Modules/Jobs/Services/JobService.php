@@ -2,13 +2,14 @@
 
 namespace App\Modules\Jobs\Services;
 
-use App\Http\Requests\JobRequest;
+use App\Http\Requests\CreateJobRequest;
+use App\Http\Requests\UpdateJobRequest;
 use App\Models\Job;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class JobService implements IJobService
 {
-    public function create(JobRequest $jobRequest): Job
+    public function create(CreateJobRequest $jobRequest): Job
     {
         $job = new Job();
         $job->fill([
@@ -24,5 +25,15 @@ class JobService implements IJobService
         $query = Job::query();
         if ($user_id) $query->where(compact("user_id"));
         return Job::query()->paginate();
+    }
+    public function update($id, UpdateJobRequest $jobRequest): Job
+    {
+        $job = Job::findOrFail($id);
+        $job->fill([
+            "title" => $jobRequest->get("title"),
+            "description" => $jobRequest->get("description"),
+        ]);
+        $job->save();
+        return $job;
     }
 }

@@ -17,5 +17,6 @@ Route::group(["middleware" => ["auth"]], function (\Illuminate\Routing\Router $r
     $router->apiResource("jobs", \App\Http\Controllers\JobController::class)->only([
         "store",
         "index",
+        "update"
     ]);
 });

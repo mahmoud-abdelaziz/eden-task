@@ -1,0 +1,37 @@
+version: '3.7'
+services:
+    eden_app:
+        build:
+            context: .
+            dockerfile: .docker/Dockerfile
+        image: 'laravelapp'
+        ports:
+            - 8088:80
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - web
+    eden_db:
+        image: mysql:8.0
+        restart: always
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_DATABASE: 'eden'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+            MYSQL_ROOT_PASSWORD: ""
+        volumes:
+            - mysql_data:/var/lib/mysql
+        networks:
+            - web
+    rabbitMQ:
+        image: rabbitmq:3-management
+        ports:
+            -   5672:5672
+        hostname: my-rabbit
+        networks:
+            - web
+networks:
+    web:
+volumes:
+    mysql_data:
